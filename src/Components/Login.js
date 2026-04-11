@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
 function Login() {
   const navigate = useNavigate();
   let [showPassword,setShowPassword] = useState(false);
+  const {login}= useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -41,61 +43,28 @@ function Login() {
     return null;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
   e.preventDefault();
+   console.log("hello",formData);
 
-  const error = validateForm();
+  try {
+    const res = await login({
+        email: formData.email,
+        password: formData.password,
+      });
+      if(res.data.success){
+        navigate("/dashboard")
+      }
+  } catch (error) {
+    console.error("Login error:", error);
 
-  if (error) {
-    setSnackbar({ show: true, message: error, type: "error" });
-
-    setTimeout(() => {
-      setSnackbar((prev) => ({ ...prev, show: false }));
-    }, 3000);
-
-    return;
-  }
-
-  // ✅ GET STORED USER
-  const storedUser = JSON.parse(localStorage.getItem("user"));
-
-  if (!storedUser) {
     setSnackbar({
       show: true,
-      message: "User not registered",
+      message: error || "Login failed",
       type: "error",
     });
-    return;
+    
   }
-
-  if (
-    storedUser.email !== formData.email ||
-    storedUser.password !== formData.password
-  ) {
-    setSnackbar({
-      show: true,
-      message: "Invalid credentials",
-      type: "error",
-    });
-    return;
-  }
-
-  setSnackbar({
-    show: true,
-    message: "Login Successful ✅",
-    type: "success",
-  });
-
-
-  setTimeout(() => {
-  if (storedUser.role === "admin") {
-    navigate("/admin-dashboard");
-  } else if (storedUser.role === "store_owner") {
-    navigate("/store-dashboard");
-  } else {
-    navigate("/dashboard");
-  }
-  }, 1000);
 };
 
   return (

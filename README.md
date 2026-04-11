@@ -1,70 +1,91 @@
-# Getting Started with Create React App
+# 📌 Rating Platform - Routes Documentation
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 🧾 Overview
+This application is a **Rating Platform** supporting three roles:
+- Admin
+- Store Owner
+- User
 
-## Available Scripts
+Each role has specific permissions and access to different routes.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 🔐 Authentication Routes
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### `POST /login`
+- Description: Login into the platform
+- Access:
+  - Admin
+  - Store Owner
+  - User
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+### `POST /register`
+- Description: Register a new account
+- Access:
+  - User
+  - Store Owner
+- Note:
+  - Admin accounts are created from the backend only
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 👥 User Management
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `GET /users`
+- Description: View all registered users and store owners
+- Access:
+  - Admin only
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### `POST /users`
+- Description: Add new users (if required)
+- Access:
+  - Admin only
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 📊 Dashboard (Role-Based)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### `GET /dashboard`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### Admin View:
+- Total users
+- Total stores
+- Total ratings
+- Total store owners
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### Store Owner View:
+- Total ratings received
+- List of users who rated their store
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+#### User View:
+- Browse stores
+- Submit ratings
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🏬 Store Routes
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### `GET /stores/all`
+- Description: View all stores
+- Access:
+  - Admin
+  - User
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### `GET /your-stores`
+- Description: View stores owned by the logged-in store owner
+- Access:
+  - Store Owner only
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🔒 Access Control Notes
+- Role-based access control is implemented
+- Authentication required for protected routes
+- Admin routes are restricted
+- Store-specific data is protected per owner
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
